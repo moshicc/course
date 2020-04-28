@@ -12,7 +12,7 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @EnableEurekaClient
 //扫描mapper接口
-@MapperScan("com.course.system.mapper")
+@MapperScan("com.course.server.mapper")
 //将带有注解的 类扫描交给spring容器管理
 @ComponentScan("com.course")
 public class SystemApplication {
