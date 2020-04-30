@@ -358,13 +358,13 @@
           <li class="">
             <a href="index.html">
               <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> Dashboard </span>
+              <span class="menu-text"> 欢迎 </span>
             </a>
 
             <b class="arrow"></b>
           </li>
 
-          <li class="">
+          <li class="active open">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-desktop"></i>
               <span class="menu-text">
