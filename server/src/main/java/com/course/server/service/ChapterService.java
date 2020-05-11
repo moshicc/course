@@ -5,6 +5,7 @@ import com.course.server.domain.ChapterExample;
 import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.mapper.ChapterMapper;
+import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -41,5 +42,12 @@ public class ChapterService {
         //设置pageDto的list属性，返回给前端的查询结果（封装在chapterdto里面了）
         pageDto.setList(chapterList);
         //最终返回pagedto，因为这个pagedto是从前端传入的，不返回前端也能拿到这个pagedto
+    }
+
+    public void save(ChapterDto chapterDto){
+        chapterDto.setId(UuidUtil.getShortUuid());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto,chapter);
+      chapterMapper.insert(chapter);
     }
 }

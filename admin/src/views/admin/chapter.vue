@@ -97,20 +97,20 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="Email">
+                  <input v-model="chapter.name" type="text" class="form-control" placeholder="名称">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">课程ID</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="Email">
+                  <input v-model="chapter.courseId" type="text" class="form-control" placeholder="课程id">
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary">保存</button>
+            <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -125,6 +125,7 @@
         name: "chapter",
         data: function(){
             return {
+                chapter: {},
                 chapters: []
             }
         },
@@ -140,6 +141,7 @@
                 let _this = this;
                 $(".modal").modal("show")
             },
+
             list(page) {
                 let _this =this;
                 _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
@@ -149,6 +151,13 @@
                     console.log("查询大章列表结果：",resopnes);
                     _this.chapters = resopnes.data.list;
                     _this.$refs.pagination.render(page,resopnes.data.total);
+                })
+            },
+
+            save(page) {
+                let _this =this;
+                _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/save", _this.chapter).then((resopnes)=>{
+                    console.log("保存大章列表结果：",resopnes);
                 })
             }
         }
