@@ -128,7 +128,8 @@
                     if(resp.success){
                         //保存成功，关闭modal，并且刷新list
                         $("#form-modal").modal("hide");
-                        _this.list(1)
+                        _this.list(1);
+                        toast.success("保存成功！");
                     }
 
                 })
@@ -152,11 +153,7 @@
                             if(resp.success){
                                 //删除成功，并且刷新list
                                 _this.list(1);
-                                Swal.fire(
-                                    '删除成功',
-                                    '删除成功.',
-                                    'success'
-                                )
+                                toast.success("删除成功！");
                             }
                         })
                     }
