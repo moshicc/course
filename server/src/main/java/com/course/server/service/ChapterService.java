@@ -11,6 +11,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +49,26 @@ public class ChapterService {
     }
 
     public void save(ChapterDto chapterDto){
-        chapterDto.setId(UuidUtil.getShortUuid());
-        Chapter chapter = new Chapter();
-        BeanUtils.copyProperties(chapterDto,chapter);
-      chapterMapper.insert(chapter);
+        //将传入的chapterDto复制转换成chapter
+        Chapter chapter = CopyUtil.copy(chapterDto,Chapter.class);
+        if (StringUtils.isEmpty(chapterDto.getId())){
+            //如果id为空就插入该数据
+            this.insert(chapter);
+        }else {
+            //如果id不为空，就修改
+            this.update(chapter);
+        }
+    }
+
+    private void insert(Chapter chapter){
+        //先生成新的 id
+        chapter.setId(UuidUtil.getShortUuid());
+        //执行插入操作
+        chapterMapper.insert(chapter);
+    }
+
+    private void update(Chapter chapter){
+        //因为是更新操作，所以chapter中已经有id了
+        chapterMapper.updateByPrimaryKey(chapter);
     }
 }
