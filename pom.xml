@@ -36,6 +36,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.60</version>
+            </dependency>
             <!--集成mybatis-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
