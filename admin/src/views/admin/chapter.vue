@@ -85,7 +85,7 @@
       </tr>
       </tbody>
     </table>
-    <div class="modal fade" tabindex="-1" role="dialog">
+    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -139,7 +139,7 @@
         methods:{
             add(){
                 let _this = this;
-                $(".modal").modal("show")
+                $("#form-modal").modal("show")
             },
 
             list(page) {
@@ -149,8 +149,11 @@
                     size:_this.$refs.pagination.size,
                 }).then((resopnes)=>{
                     console.log("查询大章列表结果：",resopnes);
-                    _this.chapters = resopnes.data.list;
-                    _this.$refs.pagination.render(page,resopnes.data.total);
+                    //response.data 获得的就是后端统一传来的responseDto，里面有success，code，message，content
+                    let resp = resopnes.data;
+                    //resp.content 就是封装的pageDto ，里面有页码num，页数size，内容list 等
+                    _this.chapters = resp.content.list;
+                    _this.$refs.pagination.render(page,resp.content.total);
                 })
             },
 
@@ -158,6 +161,13 @@
                 let _this =this;
                 _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/save", _this.chapter).then((resopnes)=>{
                     console.log("保存大章列表结果：",resopnes);
+                    let resp = resopnes.data;
+                    if(resp.success){
+                        //保存成功，关闭modal，并且刷新list
+                        $("#form-modal").modal("hide");
+                        _this.list(1)
+                    }
+
                 })
             }
         }
