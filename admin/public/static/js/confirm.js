@@ -13,7 +13,7 @@ Confirm = {
             confirmButtonText: '确认!'
         }).then((result) => {
             //这段的意思是如果点击确认 ，就执行外部的方法
-            if (result.value()){
+            if (result.value){
                 //如果这个callback有值，就调用一下这个callback
                 if (callback){
                     callback();
