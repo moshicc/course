@@ -107,10 +107,12 @@
 
             list(page) {
                 let _this =this;
+                Loading.show();
                 _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
                     page:page,
                     size:_this.$refs.pagination.size,
                 }).then((resopnes)=>{
+                    Loading.hide();
                     console.log("查询大章列表结果：",resopnes);
                     //response.data 获得的就是后端统一传来的responseDto，里面有success，code，message，content
                     let resp = resopnes.data;
@@ -122,7 +124,9 @@
 
             save(page) {
                 let _this =this;
+                Loading.show();
                 _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/save", _this.chapter).then((resopnes)=>{
+                    Loading.hide();
                     console.log("保存大章列表结果：",resopnes);
                     let resp = resopnes.data;
                     if(resp.success){
@@ -147,7 +151,9 @@
                     confirmButtonText: '确认!'
                 }).then((result) => {
                     if (result.value) {
+                        Loading.show();
                         _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/"+id).then((resopnes)=>{
+                            Loading.hide();
                             console.log("删除大章列表结果：",resopnes);
                             let resp = resopnes.data;
                             if(resp.success){
