@@ -71,4 +71,8 @@ public class ChapterService {
         //因为是更新操作，所以chapter中已经有id了
         chapterMapper.updateByPrimaryKey(chapter);
     }
+
+    public void delete(String id){
+        chapterMapper.deleteByPrimaryKey(id);
+    }
 }

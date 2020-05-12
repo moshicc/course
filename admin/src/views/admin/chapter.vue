@@ -33,7 +33,7 @@
             <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
-            <button class="btn btn-xs btn-danger">
+            <button v-on:click="del(chapter.id)" class="btn btn-xs btn-danger">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
 
@@ -128,6 +128,18 @@
                     if(resp.success){
                         //保存成功，关闭modal，并且刷新list
                         $("#form-modal").modal("hide");
+                        _this.list(1)
+                    }
+
+                })
+            },
+            del(id) {
+                let _this =this;
+                _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/"+id).then((resopnes)=>{
+                    console.log("删除大章列表结果：",resopnes);
+                    let resp = resopnes.data;
+                    if(resp.success){
+                        //删除成功，并且刷新list
                         _this.list(1)
                     }
 

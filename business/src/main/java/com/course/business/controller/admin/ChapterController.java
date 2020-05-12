@@ -7,9 +7,7 @@ import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,7 +23,7 @@ public class ChapterController {
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
     @Resource
     private ChapterService chapterService;
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto){
         //pageDto用来接收入参，也用来返回结果.
         //前端传入page和size，通过list()方法，设置pagedto的total和list属性，最终返回给前端
@@ -36,12 +34,19 @@ public class ChapterController {
          responseDto.setContent(pageDto);
          return responseDto;
     }
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto){
         LOG.info("chapterDto{}",chapterDto);
         ResponseDto responseDto = new ResponseDto();
         chapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
+        return responseDto;
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto save(@PathVariable String id){
+        LOG.info("id{}",id);
+        ResponseDto responseDto = new ResponseDto();
+        chapterService.delete(id);
         return responseDto;
     }
 }
