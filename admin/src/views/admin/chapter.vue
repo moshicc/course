@@ -94,17 +94,26 @@
             //this.$parent.activeSidebar("business-chapter-sidebar");
         },
         methods:{
+            /**
+             * 点击【新增】
+             */
             add(){
                 let _this = this;
                 _this.chapter ={};
                 $("#form-modal").modal("show")
             },
+            /**
+             *点击【编辑】
+             */
             edit(chapter){
                 let _this = this;
                 _this.chapter =$.extend({},chapter);
                 $("#form-modal").modal("show")
             },
-
+            /**
+             * 列表查询
+             * @param page
+             */
             list(page) {
                 let _this =this;
                 Loading.show();
@@ -113,7 +122,6 @@
                     size:_this.$refs.pagination.size,
                 }).then((resopnes)=>{
                     Loading.hide();
-                    console.log("查询大章列表结果：",resopnes);
                     //response.data 获得的就是后端统一传来的responseDto，里面有success，code，message，content
                     let resp = resopnes.data;
                     //resp.content 就是封装的pageDto ，里面有页码num，页数size，内容list 等
@@ -121,7 +129,10 @@
                     _this.$refs.pagination.render(page,resp.content.total);
                 })
             },
-
+            /**
+             * 点击【保存】
+             * @param page
+             */
             save(page) {
                 let _this =this;
                 //保存校验
@@ -134,7 +145,6 @@
                 Loading.show();
                 _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/save", _this.chapter).then((resopnes)=>{
                     Loading.hide();
-                    console.log("保存大章列表结果：",resopnes);
                     let resp = resopnes.data;
                     if(resp.success){
                         //保存成功，关闭modal，并且刷新list
@@ -147,6 +157,10 @@
 
                 })
             },
+            /**
+             * 点击【删除】
+             * @param id
+             */
             del(id) {
                 let _this =this;
                 //sweetalert弹出框
@@ -154,7 +168,6 @@
                     Loading.show();
                     _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/"+id).then((resopnes)=>{
                         Loading.hide();
-                        console.log("删除大章列表结果：",resopnes);
                         let resp = resopnes.data;
                         if(resp.success){
                             //删除成功，并且刷新list

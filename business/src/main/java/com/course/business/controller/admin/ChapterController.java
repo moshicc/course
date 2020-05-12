@@ -26,21 +26,30 @@ public class ChapterController {
     public static final String BUSINESS_NAME ="大章";
     @Resource
     private ChapterService chapterService;
+
+    /**
+     * 列表查询
+     * @param pageDto
+     * @return
+     */
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto){
         //pageDto用来接收入参，也用来返回结果.
         //前端传入page和size，通过list()方法，设置pagedto的total和list属性，最终返回给前端
         //因为前端是以流的 方法传递page和size,(不是以表单方式)，所以后端接收要加个@RequestBody
-        LOG.info("pageDto{}",pageDto);
         ResponseDto responseDto = new ResponseDto();
          chapterService.list(pageDto);
          responseDto.setContent(pageDto);
          return responseDto;
     }
+
+    /**
+     * 保存，id有值时更新，无值时新增
+     * @param chapterDto
+     * @return
+     */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto){
-        LOG.info("chapterDto:{}",chapterDto);
-
             //保存校验
             ValidatorUtil.require(chapterDto.getName(),"名称");
             ValidatorUtil.require(chapterDto.getCourseId(),"课程ID");
@@ -52,9 +61,14 @@ public class ChapterController {
         responseDto.setContent(chapterDto);
         return responseDto;
     }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
-    public ResponseDto save(@PathVariable String id){
-        LOG.info("id{}",id);
+    public ResponseDto delete(@PathVariable String id){
         ResponseDto responseDto = new ResponseDto();
         chapterService.delete(id);
         return responseDto;
