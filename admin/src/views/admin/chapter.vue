@@ -133,7 +133,7 @@
                         //保存成功，关闭modal，并且刷新list
                         $("#form-modal").modal("hide");
                         _this.list(1);
-                        toast.success("保存成功！");
+                        Toast.success("保存成功！");
                     }
 
                 })
@@ -141,29 +141,42 @@
             del(id) {
                 let _this =this;
                 //sweetalert弹出框
-                Swal.fire({
-                    title: '确认删除？',
-                    text: "删除后不可恢复，确认删除？",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '确认!'
-                }).then((result) => {
-                    if (result.value) {
-                        Loading.show();
-                        _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/"+id).then((resopnes)=>{
-                            Loading.hide();
-                            console.log("删除大章列表结果：",resopnes);
-                            let resp = resopnes.data;
-                            if(resp.success){
-                                //删除成功，并且刷新list
-                                _this.list(1);
-                                toast.success("删除成功！");
-                            }
-                        })
-                    }
-                })
+                Confirm.show("删除大章后不可恢复，确认删除？",function () {
+                    Loading.show();
+                    _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/"+id).then((resopnes)=>{
+                        Loading.hide();
+                        console.log("删除大章列表结果：",resopnes);
+                        let resp = resopnes.data;
+                        if(resp.success){
+                            //删除成功，并且刷新list
+                            _this.list(1);
+                            Toast.success("删除成功！");
+                        }
+                    })
+                });
+                // Swal.fire({
+                //     title: '确认删除？',
+                //     text: "删除后不可恢复，确认删除？",
+                //     icon: 'warning',
+                //     showCancelButton: true,
+                //     confirmButtonColor: '#3085d6',
+                //     cancelButtonColor: '#d33',
+                //     confirmButtonText: '确认!'
+                // }).then((result) => {
+                //     if (result.value) {
+                //         Loading.show();
+                //         _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/"+id).then((resopnes)=>{
+                //             Loading.hide();
+                //             console.log("删除大章列表结果：",resopnes);
+                //             let resp = resopnes.data;
+                //             if(resp.success){
+                //                 //删除成功，并且刷新list
+                //                 _this.list(1);
+                //                 Toast.success("删除成功！");
+                //             }
+                //         })
+                //     }
+                // })
 
             }
         }
