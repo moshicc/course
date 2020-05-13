@@ -9,6 +9,7 @@
         <module>gateway</module>
         <module>server</module>
         <module>business</module>
+        <module>generator</module>
     </modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
@@ -56,6 +57,11 @@
                 <groupId>com.course</groupId>
                 <artifactId>server</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.30</version>
             </dependency>
             <!-- mybatis分页插件pagehelper -->
 <!--            <dependency>-->
