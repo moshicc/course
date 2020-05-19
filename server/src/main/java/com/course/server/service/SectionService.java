@@ -50,7 +50,7 @@ List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
             //            sectionDtoList.add(sectionDto);
             //        }
             //设置pageDto的list属性，返回给前端的查询结果（封装在sectiondto里面了）
-            pageDto.setList(sectionList);
+            pageDto.setList(sectionDtoList);
             //最终返回pagedto，因为这个pagedto是从前端传入的，不返回前端也能拿到这个pagedto
             }
 
