@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 /**
 * @author zcc
 * @date 2020/4/28 13:50
@@ -34,6 +35,7 @@ public void list(PageDto pageDto){
 //设置查询页，每页数
 PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
 SectionExample sectionExample = new SectionExample();
+        sectionExample.setOrderByClause("sort asc");
 List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
     //设置pageDto的total属性，总条数
     PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
@@ -73,6 +75,9 @@ List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
             * @param section
             */
             private void insert(Section section){
+            Date now = new Date();
+                    section.setCreatedAt(now);
+                    section.setUpdatedAt(now);
             //先生成新的 id
             section.setId(UuidUtil.getShortUuid());
             //执行插入操作
@@ -84,6 +89,7 @@ List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
             * @param section
             */
             private void update(Section section){
+            section.setUpdatedAt(new Date());
             //因为是更新操作，所以section中已经有id了
             sectionMapper.updateByPrimaryKey(section);
             }
