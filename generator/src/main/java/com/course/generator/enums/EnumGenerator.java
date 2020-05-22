@@ -1,13 +1,15 @@
 package com.course.generator.enums;
 
-import com.course.server.enums.SectionChargeEnum;
-import com.course.server.enums.YesNoEnum;
+
+import com.course.server.enums.*;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 public class EnumGenerator {
      static String path = "admin\\public\\static\\js\\enums.js";
@@ -20,6 +22,9 @@ public class EnumGenerator {
         try {
             toJson(SectionChargeEnum.class, bufferObject, bufferArray);
             toJson(YesNoEnum.class, bufferObject, bufferArray);
+            toJson(CourseChargeEnum.class, bufferObject, bufferArray);
+            toJson(CourseLevelEnum.class, bufferObject, bufferArray);
+            toJson(CourseStatusEnum.class, bufferObject, bufferArray);
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
@@ -40,6 +45,7 @@ public class EnumGenerator {
         Method name = clazz.getMethod("name");
         Method getDesc = clazz.getMethod("getDesc");
         Method getCode = clazz.getMethod("getCode");
+
 
         // 生成对象
         bufferObject.append(key).append("={");
