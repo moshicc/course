@@ -1,6 +1,12 @@
 <template>
   <div>
+    <h3>{{course.name}}</h3>
     <p>
+      <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        返回课程
+      </router-link>
+      &nbsp;
       <button v-on:click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         新增
@@ -83,12 +89,20 @@
         data: function(){
             return {
                 chapter: {},
-                chapters: []
+                chapters: [],
+                course: {},
             }
         },
         mounted:function(){
             let  _this = this;
             _this.$refs.pagination.size=5;
+            //定义本地变量，取出course缓存在页面的信息
+            let course = SessionStorage.get("course") ||{};
+            if(Tool.isEmpty(course)){
+                _this.$router.push("/welcome");
+            }
+            //_this.course 是在上面定义的本地变量，course是接收缓存中的值
+            _this.course = course;
             _this.list(1);
             //sidebar激活样式 方法一
             //this.$parent.activeSidebar("business-chapter-sidebar");
