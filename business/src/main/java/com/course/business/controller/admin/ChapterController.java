@@ -1,10 +1,8 @@
 package com.course.business.controller.admin;
 
-import com.course.server.domain.Chapter;
 import com.course.server.dto.ChapterDto;
-import com.course.server.dto.PageDto;
+import com.course.server.dto.ChapterPageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.exception.ValidatorException;
 import com.course.server.service.ChapterService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -12,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author zcc
@@ -29,17 +26,19 @@ public class ChapterController {
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto){
+    public ResponseDto list(@RequestBody ChapterPageDto chapterPageDto){
         //pageDto用来接收入参，也用来返回结果.
         //前端传入page和size，通过list()方法，设置pagedto的total和list属性，最终返回给前端
         //因为前端是以流的 方法传递page和size,(不是以表单方式)，所以后端接收要加个@RequestBody
         ResponseDto responseDto = new ResponseDto();
-         chapterService.list(pageDto);
-         responseDto.setContent(pageDto);
+        ValidatorUtil.require(chapterPageDto.getCourseId(),"课程ID");
+
+        chapterService.list(chapterPageDto);
+         responseDto.setContent(chapterPageDto);
          return responseDto;
     }
 
