@@ -26,6 +26,8 @@ import java.util.List;
 public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
+    @Resource
+    private CourseService courseService;
 
     /**
      * 列表查询
@@ -78,6 +80,7 @@ public class SectionService {
             //如果id不为空，就修改
             this.update(section);
         }
+        courseService.updateTime(sectionDto.getCourseId());
     }
 
     /**
