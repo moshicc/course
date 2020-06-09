@@ -11,6 +11,7 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -67,9 +68,10 @@ public class SectionService {
 
     /**
      * 保存。id有值时更新，无值时新增
-     *
+     * 在方法上面加@Transactional 就是开启了事务了，因为已经定义了Config文件了 TransactionManagementConfig.class
      * @param sectionDto
      */
+    @Transactional
     public void save(SectionDto sectionDto) {
         //将传入的sectionDto复制转换成section
         Section section = CopyUtil.copy(sectionDto, Section.class);
