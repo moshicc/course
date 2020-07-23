@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zcc
@@ -23,6 +24,18 @@ public class CategoryController {
     public static final String BUSINESS_NAME ="分类";
     @Resource
     private CategoryService categoryService;
+    /**
+     * 列表查询
+     * @param
+     * @return
+     */
+    @PostMapping("/all")
+    public ResponseDto all(){
+        ResponseDto responseDto = new ResponseDto();
+        List<CategoryDto> categoryDtoList = categoryService.all();
+        responseDto.setContent(categoryDtoList);
+        return responseDto;
+    }
 
     /**
      * 列表查询
@@ -31,9 +44,6 @@ public class CategoryController {
      */
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto){
-        //pageDto用来接收入参，也用来返回结果.
-        //前端传入page和size，通过list()方法，设置pagedto的total和list属性，最终返回给前端
-        //因为前端是以流的 方法传递page和size,(不是以表单方式)，所以后端接收要加个@RequestBody
         ResponseDto responseDto = new ResponseDto();
          categoryService.list(pageDto);
          responseDto.setContent(pageDto);

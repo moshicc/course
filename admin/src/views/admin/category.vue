@@ -1,48 +1,96 @@
 <template>
   <div>
-    <p>
-      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
-        <i class="ace-icon fa fa-edit"></i>
-        新增
-      </button>
-      &nbsp;
-      <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
-        <i class="ace-icon fa fa-refresh"></i>
-        刷新
-      </button>
-    </p>
-    <pagination ref="pagination" v-bind:list="list"></pagination>
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <tr>
-                            <th>id</th>
-                  <th>父id</th>
-                  <th>名称</th>
-                  <th>顺序</th>
-        <th>操作</th>
-      </tr>
-      </thead>
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-edit"></i>
+            新增
+          </button>
+          &nbsp;
+          <button v-on:click="all()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-refresh"></i>
+            刷新
+          </button>
+        </p>
 
-      <tbody>
-      <tr v-for="category in categorys">
-                    <td> {{category.id}}</td>
-                    <td> {{category.parent}}</td>
-                    <td> {{category.name}}</td>
-                    <td> {{category.sort}}</td>
-        <td>
-          <div class="hidden-sm hidden-xs btn-group">
-            <button v-on:click="edit(category)" class="btn btn-xs btn-info">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-            <button v-on:click="del(category.id)" class="btn btn-xs btn-danger">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
+        <table id="level1-table" class="table  table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>顺序</th>
+            <th>操作</th>
+          </tr>
+          </thead>
 
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+          <tbody>
+          <tr v-for="category in level1" v-on:click="onClickLevel1(category)" v-bind:class="{'active':category.id === active.id}">
+            <td> {{category.id}}</td>
+            <td> {{category.name}}</td>
+            <td> {{category.sort}}</td>
+            <td>
+              <div class="hidden-sm hidden-xs btn-group">
+                <button v-on:click="edit(category)" class="btn btn-xs btn-info">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
+                <button v-on:click="del(category.id)" class="btn btn-xs btn-danger">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-6">
+        <p>
+          <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-edit"></i>
+            新增
+          </button>
+          &nbsp;
+          <button v-on:click="all()" class="btn btn-white btn-default btn-round">
+            <i class="ace-icon fa fa-refresh"></i>
+            刷新
+          </button>
+        </p>
+
+        <table id="level2-table" class="table  table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>顺序</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr v-for="category in level2">
+            <td> {{category.id}}</td>
+            <td> {{category.name}}</td>
+            <td> {{category.sort}}</td>
+            <td>
+              <div class="hidden-sm hidden-xs btn-group">
+                <button v-on:click="edit(category)" class="btn btn-xs btn-info">
+                  <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </button>
+                <button v-on:click="del(category.id)" class="btn btn-xs btn-danger">
+                  <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -83,20 +131,21 @@
 </template>
 
 <script>
-    import Pagination from "../../components/pagination"
     export default {
-        components:{Pagination},
         name: "business-category",
         data: function(){
             return {
                 category: {},
                 categorys: [],
+                level1: [],
+                level2: [],
+                active: {},
             }
         },
         mounted:function(){
             let  _this = this;
-            _this.$refs.pagination.size=5;
-            _this.list(1);
+            debugger
+            _this.all();
             //sidebar激活样式 方法一
             //this.$parent.activeSidebar("business-category-sidebar");
         },
@@ -119,28 +168,45 @@
             },
             /**
              * 列表查询
-             * @param page
+             * @param
              */
-            list(page) {
+            all() {
                 let _this =this;
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER+"/business/admin/category/list",{
-                    page:page,
-                    size:_this.$refs.pagination.size,
-                }).then((resopnes)=>{
+                _this.$ajax.post(process.env.VUE_APP_SERVER+"/business/admin/category/all").then((resopnes)=>{
+                    debugger
                     Loading.hide();
                     //response.data 获得的就是后端统一传来的responseDto，里面有success，code，message，content
                     let resp = resopnes.data;
-                    //resp.content 就是封装的pageDto ，里面有页码num，页数size，内容list 等
-                    _this.categorys = resp.content.list;
-                    _this.$refs.pagination.render(page,resp.content.total);
+                    _this.categorys = resp.content;
+
+                    //将所有的记录格式化树形结构
+                    _this.level1 =[];
+                    for (let i = 0; i < _this.categorys.length; i++) {
+                        let c = _this.categorys[i];
+                        console.log("========:"+ _this.categorys[i]);
+                        console.log("========:"+c);
+                        //如果parent等于八个零，就是一级分类
+                        if (c.parent === '00000000')
+                            _this.level1.push(c);
+                        for (let j = 0; j < _this.categorys.length; j++) {
+                            let child = _this.categorys[j];
+                            //如果parent等于 等一级分类的id 那么它就是他就是这个id的子分类
+                            if (child.parent === c.id) {
+                                if(Tool.isEmpty(c.children)){
+                                    c.children =[];
+                                }
+                                c.children.push(child)
+                            }
+                        }
+                    }
                 })
             },
             /**
              * 点击【保存】
              * @param page
              */
-            save(page) {
+            save() {
                 let _this =this;
                 //保存校验
                 if (1 != 1
@@ -157,7 +223,7 @@
                     if(resp.success){
                         //保存成功，关闭modal，并且刷新list
                         $("#form-modal").modal("hide");
-                        _this.list(1);
+                        _this.all();
                         Toast.success("保存成功！");
                     }else {
                         Toast.warning(resp.message);
@@ -179,13 +245,24 @@
                         let resp = resopnes.data;
                         if(resp.success){
                             //删除成功，并且刷新list
-                            _this.list(1);
+                            _this.all();
                             Toast.success("删除成功！");
                         }
                     })
                 });
 
+            },
+            //一级分类行的点击事件
+            onClickLevel1(category){
+                let _this = this;
+                _this.active = category;
+                _this.level2 = category.children;
             }
         }
     }
 </script>
+<style>
+  .actvie td{
+    background-color: #d6e9c6 !important;
+  }
+</style>

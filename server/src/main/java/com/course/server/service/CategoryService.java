@@ -24,6 +24,18 @@ public class CategoryService {
 @Resource
 private CategoryMapper categoryMapper;
 
+    /**
+     * 列表查询
+     * @param
+     */
+    public  List<CategoryDto>  all(){
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+        List<CategoryDto> categoryDtoList = CopyUtil.copyList(categoryList,CategoryDto.class);
+        return categoryDtoList;
+    }
+
 /**
 * 列表查询
 * @param pageDto
