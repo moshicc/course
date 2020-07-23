@@ -51,11 +51,6 @@
             <i class="ace-icon fa fa-edit"></i>
             新增二级
           </button>
-          &nbsp;
-          <button v-on:click="all()" class="btn btn-white btn-default btn-round">
-            <i class="ace-icon fa fa-refresh"></i>
-            刷新
-          </button>
         </p>
 
         <table id="level2-table" class="table  table-bordered table-hover">
@@ -144,7 +139,6 @@
         },
         mounted:function(){
             let  _this = this;
-            debugger
             _this.all();
             //sidebar激活样式 方法一
             //this.$parent.activeSidebar("business-category-sidebar");
@@ -190,7 +184,6 @@
                 let _this =this;
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER+"/business/admin/category/all").then((resopnes)=>{
-                    debugger
                     Loading.hide();
                     //response.data 获得的就是后端统一传来的responseDto，里面有success，code，message，content
                     let resp = resopnes.data;
@@ -216,6 +209,11 @@
                             }
                         }
                     }
+                    //对当前一级分类选中的表格触发一次点击事件，来刷新二级菜单
+                    // 注意：界面的渲染要在vue绑定好变量后才做，所以延迟加载100ms
+                    setTimeout(function () {
+                        $("tr.active").trigger("click");
+                    },300);
                 })
             },
             /**
