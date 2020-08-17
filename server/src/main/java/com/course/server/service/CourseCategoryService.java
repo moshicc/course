@@ -11,6 +11,7 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -95,6 +96,7 @@ List<CourseCategory> courseCategoryList = courseCategoryMapper.selectByExample(c
              * @author zcc13
              * @date 2020/8/17 22:27
              */
+            @Transactional
             public void saveBatch(String courseId, List<CategoryDto> dtoList){
                 //批量保存之前先清空
                 CourseCategoryExample example = new CourseCategoryExample();
@@ -110,6 +112,20 @@ List<CourseCategory> courseCategoryList = courseCategoryMapper.selectByExample(c
                     courseCategory.setCategoryId(categoryDto.getId());
                     insert(courseCategory);
                 }
+            }
+            /* *
+             * @description:根据课程id 查找分类
+             * @param courseId
+             * @return {@link java.util.List<com.course.server.dto.CourseCategoryDto>}
+             * @throws
+             * @author zcc13
+             * @date 2020/8/17 22:37
+             */
+            public List<CourseCategoryDto> listByCourse(String courseId){
+                CourseCategoryExample example = new CourseCategoryExample();
+                example.createCriteria().andCourseIdEqualTo(courseId);
+                List<CourseCategory> courseCategoryList = courseCategoryMapper.selectByExample(example);
+                return CopyUtil.copyList(courseCategoryList,CourseCategoryDto.class);
             }
             }
 

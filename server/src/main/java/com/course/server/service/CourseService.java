@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -67,6 +68,7 @@ public class CourseService {
      *
      * @param courseDto
      */
+    @Transactional
     public void save(CourseDto courseDto) {
         //将传入的courseDto复制转换成course
         Course course = CopyUtil.copy(courseDto, Course.class);
